@@ -34,8 +34,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     // булево игра проиграна?
     boolean isGameLost = false;
 
-    Toast toast;
-
     // вьюшка текущего счета
     TextView textViewScore;
     // макет игрового поля
@@ -100,6 +98,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         final Context context = this;
 
+        resetGameTiles();
+
         playField.setOnTouchListener(new OnSwipeTouchListener(context) {
             @Override
             public void onSwipeLeft() {
@@ -107,11 +107,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     isGameLost = true;
                 }
                 if (!isGameLost && !isGameWon) {
-                    if (toast != null) {
-                        toast.cancel();
-                    }
-                    toast = Toast.makeText(context, "onSwipeLeft", Toast.LENGTH_SHORT);
-                    toast.show();
                     left();
                 }
             }
@@ -122,13 +117,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     isGameLost = true;
                 }
                 if (!isGameLost && !isGameWon) {
-                    if (toast != null) {
-                        toast.cancel();
-                    }
-                    toast = Toast.makeText(context, "onSwipeTop", Toast.LENGTH_SHORT);
-                    toast.show();
                     up();
-
                 }
             }
 
@@ -138,13 +127,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     isGameLost = true;
                 }
                 if (!isGameLost && !isGameWon) {
-                    if (toast != null) {
-                        toast.cancel();
-                    }
-                    toast = Toast.makeText(context, "onSwipeBottom", Toast.LENGTH_SHORT);
-                    toast.show();
                     down();
-
                 }
             }
 
@@ -154,40 +137,33 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     isGameLost = true;
                 }
                 if (!isGameLost && !isGameWon) {
-                    if (toast != null) {
-                        toast.cancel();
-                    }
-                    toast = Toast.makeText(context, "onSwipeRight", Toast.LENGTH_SHORT);
-                    toast.show();
                     right();
                 }
             }
 
         });
-
-
     }
 
     // метод обновления игрового поля
     public void repaint() {
-        textViewScore.setText(score);
+        textViewScore.setText(String.valueOf(score));
         // обновляем все значения TextView по массиву
-        textViewOneOne.setText(gameTiles[0][0].value);
-        textViewOneTwo.setText(gameTiles[0][1].value);
-        textViewOneThree.setText(gameTiles[0][2].value);
-        textViewOneFour.setText(gameTiles[0][3].value);
-        textViewTwoOne.setText(gameTiles[1][0].value);
-        textViewTwoTwo.setText(gameTiles[1][1].value);
-        textViewTwoThree.setText(gameTiles[1][2].value);
-        textViewTwoFour.setText(gameTiles[1][3].value);
-        textViewThreeOne.setText(gameTiles[2][0].value);
-        textViewThreeTwo.setText(gameTiles[2][1].value);
-        textViewThreeThree.setText(gameTiles[2][2].value);
-        textViewThreeFour.setText(gameTiles[2][3].value);
-        textViewFourOne.setText(gameTiles[3][0].value);
-        textViewFourTwo.setText(gameTiles[3][1].value);
-        textViewFourThree.setText(gameTiles[3][2].value);
-        textViewFourFour.setText(gameTiles[3][3].value);
+        textViewOneOne.setText(String.valueOf(gameTiles[0][0].value));
+        textViewOneTwo.setText(String.valueOf(gameTiles[0][1].value));
+        textViewOneThree.setText(String.valueOf(gameTiles[0][2].value));
+        textViewOneFour.setText(String.valueOf(gameTiles[0][3].value));
+        textViewTwoOne.setText(String.valueOf(gameTiles[1][0].value));
+        textViewTwoTwo.setText(String.valueOf(gameTiles[1][1].value));
+        textViewTwoThree.setText(String.valueOf(gameTiles[1][2].value));
+        textViewTwoFour.setText(String.valueOf(gameTiles[1][3].value));
+        textViewThreeOne.setText(String.valueOf(gameTiles[2][0].value));
+        textViewThreeTwo.setText(String.valueOf(gameTiles[2][1].value));
+        textViewThreeThree.setText(String.valueOf(gameTiles[2][2].value));
+        textViewThreeFour.setText(String.valueOf(gameTiles[2][3].value));
+        textViewFourOne.setText(String.valueOf(gameTiles[3][0].value));
+        textViewFourTwo.setText(String.valueOf(gameTiles[3][1].value));
+        textViewFourThree.setText(String.valueOf(gameTiles[3][2].value));
+        textViewFourFour.setText(String.valueOf(gameTiles[3][3].value));
         // обновляем все цвета текта TextView по массиву
         textViewOneOne.setTextColor(gameTiles[0][0].getFontColor());
         textViewOneTwo.setTextColor(gameTiles[0][1].getFontColor());
