@@ -42,8 +42,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     ImageButton imageButtonBack;
     // кнопка рестарта
     ImageButton imageButtonRefresh;
-    // кнопка лучшего хода
+    // кнопка рандомного хода
     ImageButton imageButtonHack;
+    // кнопка лучшего хода
+    ImageButton imageButtonBestMove;
+
     // вьюшки игрового поля
     TextView textViewOneOne;
     TextView textViewOneTwo;
@@ -73,6 +76,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         imageButtonBack = (ImageButton) findViewById(R.id.button_back);
         imageButtonRefresh = (ImageButton) findViewById(R.id.button_refresh);
         imageButtonHack = (ImageButton) findViewById(R.id.button_hack);
+        imageButtonBestMove = (ImageButton)findViewById(R.id.button_best_move);
         textViewOneOne = (TextView) findViewById(R.id.one_one);
         textViewOneTwo = (TextView) findViewById(R.id.one_two);
         textViewOneThree = (TextView) findViewById(R.id.one_three);
@@ -93,6 +97,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         imageButtonBack.setOnClickListener(this);
         imageButtonRefresh.setOnClickListener(this);
         imageButtonHack.setOnClickListener(this);
+        imageButtonBestMove.setOnClickListener(this);
         // инициализируем массив
         gameTiles = new Tile[FIELD_WIDTH][FIELD_WIDTH];
 
@@ -148,56 +153,56 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public void repaint() {
         textViewScore.setText(String.valueOf(score));
         // обновляем все значения TextView по массиву
-        textViewOneOne.setText(String.valueOf(gameTiles[0][0].value));
-        textViewOneTwo.setText(String.valueOf(gameTiles[0][1].value));
-        textViewOneThree.setText(String.valueOf(gameTiles[0][2].value));
-        textViewOneFour.setText(String.valueOf(gameTiles[0][3].value));
-        textViewTwoOne.setText(String.valueOf(gameTiles[1][0].value));
-        textViewTwoTwo.setText(String.valueOf(gameTiles[1][1].value));
-        textViewTwoThree.setText(String.valueOf(gameTiles[1][2].value));
-        textViewTwoFour.setText(String.valueOf(gameTiles[1][3].value));
-        textViewThreeOne.setText(String.valueOf(gameTiles[2][0].value));
-        textViewThreeTwo.setText(String.valueOf(gameTiles[2][1].value));
-        textViewThreeThree.setText(String.valueOf(gameTiles[2][2].value));
-        textViewThreeFour.setText(String.valueOf(gameTiles[2][3].value));
-        textViewFourOne.setText(String.valueOf(gameTiles[3][0].value));
-        textViewFourTwo.setText(String.valueOf(gameTiles[3][1].value));
-        textViewFourThree.setText(String.valueOf(gameTiles[3][2].value));
-        textViewFourFour.setText(String.valueOf(gameTiles[3][3].value));
+        textViewOneOne.setText(String.valueOf(gameTiles[0][0].value == 0 ? "" : gameTiles[0][0].value));
+        textViewOneTwo.setText(String.valueOf(gameTiles[0][1].value == 0 ? "" : gameTiles[0][1].value));
+        textViewOneThree.setText(String.valueOf(gameTiles[0][2].value == 0 ? "" : gameTiles[0][2].value));
+        textViewOneFour.setText(String.valueOf(gameTiles[0][3].value == 0 ? "" : gameTiles[0][3].value));
+        textViewTwoOne.setText(String.valueOf(gameTiles[1][0].value == 0 ? "" : gameTiles[1][0].value));
+        textViewTwoTwo.setText(String.valueOf(gameTiles[1][1].value == 0 ? "" : gameTiles[1][1].value));
+        textViewTwoThree.setText(String.valueOf(gameTiles[1][2].value == 0 ? "" : gameTiles[1][2].value));
+        textViewTwoFour.setText(String.valueOf(gameTiles[1][3].value == 0 ? "" : gameTiles[1][3].value));
+        textViewThreeOne.setText(String.valueOf(gameTiles[2][0].value == 0 ? "" : gameTiles[2][0].value));
+        textViewThreeTwo.setText(String.valueOf(gameTiles[2][1].value == 0 ? "" : gameTiles[2][1].value));
+        textViewThreeThree.setText(String.valueOf(gameTiles[2][2].value == 0 ? "" : gameTiles[2][2].value));
+        textViewThreeFour.setText(String.valueOf(gameTiles[2][3].value == 0 ? "" : gameTiles[2][3].value));
+        textViewFourOne.setText(String.valueOf(gameTiles[3][0].value == 0 ? "" : gameTiles[3][0].value));
+        textViewFourTwo.setText(String.valueOf(gameTiles[3][1].value == 0 ? "" : gameTiles[3][1].value));
+        textViewFourThree.setText(String.valueOf(gameTiles[3][2].value == 0 ? "" : gameTiles[3][2].value));
+        textViewFourFour.setText(String.valueOf(gameTiles[3][3].value == 0 ? "" : gameTiles[3][3].value));
         // обновляем все цвета текта TextView по массиву
-        textViewOneOne.setTextColor(gameTiles[0][0].getFontColor());
-        textViewOneTwo.setTextColor(gameTiles[0][1].getFontColor());
-        textViewOneThree.setTextColor(gameTiles[0][2].getFontColor());
-        textViewOneFour.setTextColor(gameTiles[0][3].getFontColor());
-        textViewTwoOne.setTextColor(gameTiles[1][0].getFontColor());
-        textViewTwoTwo.setTextColor(gameTiles[1][1].getFontColor());
-        textViewTwoThree.setTextColor(gameTiles[1][2].getFontColor());
-        textViewTwoFour.setTextColor(gameTiles[1][3].getFontColor());
-        textViewThreeOne.setTextColor(gameTiles[2][0].getFontColor());
-        textViewThreeTwo.setTextColor(gameTiles[2][1].getFontColor());
-        textViewThreeThree.setTextColor(gameTiles[2][2].getFontColor());
-        textViewThreeFour.setTextColor(gameTiles[2][3].getFontColor());
-        textViewFourOne.setTextColor(gameTiles[3][0].getFontColor());
-        textViewFourTwo.setTextColor(gameTiles[3][1].getFontColor());
-        textViewFourThree.setTextColor(gameTiles[3][2].getFontColor());
-        textViewFourFour.setTextColor(gameTiles[3][3].getFontColor());
+        textViewOneOne.setTextColor(getResources().getColor(gameTiles[0][0].getFontColor()));
+        textViewOneTwo.setTextColor(getResources().getColor(gameTiles[0][1].getFontColor()));
+        textViewOneThree.setTextColor(getResources().getColor(gameTiles[0][2].getFontColor()));
+        textViewOneFour.setTextColor(getResources().getColor(gameTiles[0][3].getFontColor()));
+        textViewTwoOne.setTextColor(getResources().getColor(gameTiles[1][0].getFontColor()));
+        textViewTwoTwo.setTextColor(getResources().getColor(gameTiles[1][1].getFontColor()));
+        textViewTwoThree.setTextColor(getResources().getColor(gameTiles[1][2].getFontColor()));
+        textViewTwoFour.setTextColor(getResources().getColor(gameTiles[1][3].getFontColor()));
+        textViewThreeOne.setTextColor(getResources().getColor(gameTiles[2][0].getFontColor()));
+        textViewThreeTwo.setTextColor(getResources().getColor(gameTiles[2][1].getFontColor()));
+        textViewThreeThree.setTextColor(getResources().getColor(gameTiles[2][2].getFontColor()));
+        textViewThreeFour.setTextColor(getResources().getColor(gameTiles[2][3].getFontColor()));
+        textViewFourOne.setTextColor(getResources().getColor(gameTiles[3][0].getFontColor()));
+        textViewFourTwo.setTextColor(getResources().getColor(gameTiles[3][1].getFontColor()));
+        textViewFourThree.setTextColor(getResources().getColor(gameTiles[3][2].getFontColor()));
+        textViewFourFour.setTextColor(getResources().getColor(gameTiles[3][3].getFontColor()));
         // обновляем все цвета фона TextView по массиву
-        textViewOneOne.setBackgroundColor(gameTiles[0][0].getTileColor());
-        textViewOneTwo.setBackgroundColor(gameTiles[0][1].getTileColor());
-        textViewOneThree.setBackgroundColor(gameTiles[0][2].getTileColor());
-        textViewOneFour.setBackgroundColor(gameTiles[0][3].getTileColor());
-        textViewTwoOne.setBackgroundColor(gameTiles[1][0].getTileColor());
-        textViewTwoTwo.setBackgroundColor(gameTiles[1][1].getTileColor());
-        textViewTwoThree.setBackgroundColor(gameTiles[1][2].getTileColor());
-        textViewTwoFour.setBackgroundColor(gameTiles[1][3].getTileColor());
-        textViewThreeOne.setBackgroundColor(gameTiles[2][0].getTileColor());
-        textViewThreeTwo.setBackgroundColor(gameTiles[2][1].getTileColor());
-        textViewThreeThree.setBackgroundColor(gameTiles[2][2].getTileColor());
-        textViewThreeFour.setBackgroundColor(gameTiles[2][3].getTileColor());
-        textViewFourOne.setBackgroundColor(gameTiles[3][0].getTileColor());
-        textViewFourTwo.setBackgroundColor(gameTiles[3][1].getTileColor());
-        textViewFourThree.setBackgroundColor(gameTiles[3][2].getTileColor());
-        textViewFourFour.setBackgroundColor(gameTiles[3][3].getTileColor());
+        textViewOneOne.setBackgroundColor(getResources().getColor(gameTiles[0][0].getTileColor()));
+        textViewOneTwo.setBackgroundColor(getResources().getColor(gameTiles[0][1].getTileColor()));
+        textViewOneThree.setBackgroundColor(getResources().getColor(gameTiles[0][2].getTileColor()));
+        textViewOneFour.setBackgroundColor(getResources().getColor(gameTiles[0][3].getTileColor()));
+        textViewTwoOne.setBackgroundColor(getResources().getColor(gameTiles[1][0].getTileColor()));
+        textViewTwoTwo.setBackgroundColor(getResources().getColor(gameTiles[1][1].getTileColor()));
+        textViewTwoThree.setBackgroundColor(getResources().getColor(gameTiles[1][2].getTileColor()));
+        textViewTwoFour.setBackgroundColor(getResources().getColor(gameTiles[1][3].getTileColor()));
+        textViewThreeOne.setBackgroundColor(getResources().getColor(gameTiles[2][0].getTileColor()));
+        textViewThreeTwo.setBackgroundColor(getResources().getColor(gameTiles[2][1].getTileColor()));
+        textViewThreeThree.setBackgroundColor(getResources().getColor(gameTiles[2][2].getTileColor()));
+        textViewThreeFour.setBackgroundColor(getResources().getColor(gameTiles[2][3].getTileColor()));
+        textViewFourOne.setBackgroundColor(getResources().getColor(gameTiles[3][0].getTileColor()));
+        textViewFourTwo.setBackgroundColor(getResources().getColor(gameTiles[3][1].getTileColor()));
+        textViewFourThree.setBackgroundColor(getResources().getColor(gameTiles[3][2].getTileColor()));
+        textViewFourFour.setBackgroundColor(getResources().getColor(gameTiles[3][3].getTileColor()));
     }
 
     @Override
@@ -214,6 +219,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.button_hack:
                 randomMove();
+                break;
+            case R.id.button_best_move:
+                bestMove();
                 break;
         }
     }
@@ -346,6 +354,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if (move == 3) {
             down();
         }
+        repaint();
+    }
+
+    // метод для лучшего хода в игре
+    private void bestMove() {
+        // что тут писать?
+
         repaint();
     }
 
