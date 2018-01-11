@@ -3,6 +3,7 @@ package com.example.pyrov.a2048;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -36,6 +37,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     // вьюшка текущего счета
     TextView textViewScore;
+    // вьюшка конца игры
+    TextView textViewGameOver;
     // макет игрового поля
     RelativeLayout playField;
     // кнопка назад
@@ -72,11 +75,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         // инициализация макета
         textViewScore = (TextView) findViewById(R.id.score);
+        textViewGameOver = (TextView) findViewById(R.id.game_over);
         playField = (RelativeLayout) findViewById(R.id.playing_field);
         imageButtonBack = (ImageButton) findViewById(R.id.button_back);
         imageButtonRefresh = (ImageButton) findViewById(R.id.button_refresh);
         imageButtonHack = (ImageButton) findViewById(R.id.button_hack);
-        imageButtonBestMove = (ImageButton)findViewById(R.id.button_best_move);
+        imageButtonBestMove = (ImageButton) findViewById(R.id.button_best_move);
         textViewOneOne = (TextView) findViewById(R.id.one_one);
         textViewOneTwo = (TextView) findViewById(R.id.one_two);
         textViewOneThree = (TextView) findViewById(R.id.one_three);
@@ -209,15 +213,24 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_back:
+                if (!canMove()) {
+                    return;
+                }
                 rollback();
                 break;
             case R.id.button_refresh:
+                textViewGameOver.setVisibility(View.GONE);
+                previousScores.clear();
+                previousStates.clear();
                 score = 0;
                 isGameWon = false;
                 isGameLost = false;
                 resetGameTiles();
                 break;
             case R.id.button_hack:
+                if (!canMove()) {
+                    return;
+                }
                 randomMove();
                 break;
             case R.id.button_best_move:
@@ -259,6 +272,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if (!getEmptyTiles().isEmpty()) {
             return true;
         }
+        textViewGameOver.setVisibility(View.VISIBLE);
         return false;
     }
 
@@ -360,7 +374,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     // метод для лучшего хода в игре
     private void bestMove() {
         // что тут писать?
-
+        Toast.makeText(this, "Пока не реализовано", Toast.LENGTH_SHORT).show();
         repaint();
     }
 

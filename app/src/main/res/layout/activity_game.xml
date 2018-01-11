@@ -20,7 +20,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingLeft="20dp"
-
             android:text="2048"
             android:textColor="#776E65"
             android:textSize="75sp" />
@@ -52,6 +51,22 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/game_over"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="6dp"
+        android:layout_marginStart="6dp"
+        android:gravity="center"
+        android:text="GAME OVER"
+        android:textColor="#776E65"
+        android:textSize="22sp"
+        android:visibility="gone"
+        android:padding="8dp"/>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -323,8 +338,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="55dp"
-        android:layout_marginEnd="15dp"
-        android:layout_toStartOf="@+id/button_hack"
+        android:layout_marginRight="15dp"
+        android:layout_toLeftOf="@+id/button_hack"
         android:background="#CDC1B4"
         android:src="@drawable/ic_cached_white_48dp" />
 
