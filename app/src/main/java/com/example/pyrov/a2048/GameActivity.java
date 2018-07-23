@@ -3,9 +3,9 @@ package com.example.pyrov.a2048;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +13,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -22,6 +26,59 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     int maxTile;
     // константа, определяющая ширину игрового поля
     private static final int FIELD_WIDTH = 4;
+    @BindView(R.id.score)
+    TextView textViewScore;
+    @BindView(R.id.info)
+    LinearLayout info;
+    @BindView(R.id.game_over)
+    TextView textViewGameOver;
+
+    @BindView(R.id.one_one)
+    TextView textViewOneOne;
+    @BindView(R.id.one_two)
+    TextView textViewOneTwo;
+    @BindView(R.id.one_three)
+    TextView textViewOneThree;
+    @BindView(R.id.one_four)
+    TextView textViewOneFour;
+    @BindView(R.id.two_one)
+    TextView textViewTwoOne;
+    @BindView(R.id.two_two)
+    TextView textViewTwoTwo;
+    @BindView(R.id.two_three)
+    TextView textViewTwoThree;
+    @BindView(R.id.two_four)
+    TextView textViewTwoFour;
+    @BindView(R.id.three_one)
+    TextView textViewThreeOne;
+    @BindView(R.id.three_two)
+    TextView textViewThreeTwo;
+    @BindView(R.id.three_three)
+    TextView textViewThreeThree;
+    @BindView(R.id.three_four)
+    TextView textViewThreeFour;
+    @BindView(R.id.four_one)
+    TextView textViewFourOne;
+    @BindView(R.id.four_two)
+    TextView textViewFourTwo;
+    @BindView(R.id.four_three)
+    TextView textViewFourThree;
+    @BindView(R.id.four_four)
+    TextView textViewFourFour;
+
+    @BindView(R.id.linearLayout)
+    LinearLayout linearLayout;
+    @BindView(R.id.button_refresh)
+    ImageButton imageButtonRefresh;
+    @BindView(R.id.button_back)
+    ImageButton imageButtonBack;
+    @BindView(R.id.button_hack)
+    ImageButton imageButtonHack;
+    @BindView(R.id.button_best_move)
+    ImageButton imageButtonBestMove;
+    @BindView(R.id.playing_field)
+    RelativeLayout playField;
+
     // двумерный массив, состоящий из объектов класса Tile
     private Tile[][] gameTiles;
     // булево - сохранить игру?
@@ -35,73 +92,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     // булево игра проиграна?
     boolean isGameLost = false;
 
-    // вьюшка текущего счета
-    TextView textViewScore;
-    // вьюшка конца игры
-    TextView textViewGameOver;
-    // макет игрового поля
-    RelativeLayout playField;
-    // кнопка назад
-    ImageButton imageButtonBack;
-    // кнопка рестарта
-    ImageButton imageButtonRefresh;
-    // кнопка рандомного хода
-    ImageButton imageButtonHack;
-    // кнопка лучшего хода
-    ImageButton imageButtonBestMove;
-
-    // вьюшки игрового поля
-    TextView textViewOneOne;
-    TextView textViewOneTwo;
-    TextView textViewOneThree;
-    TextView textViewOneFour;
-    TextView textViewTwoOne;
-    TextView textViewTwoTwo;
-    TextView textViewTwoThree;
-    TextView textViewTwoFour;
-    TextView textViewThreeOne;
-    TextView textViewThreeTwo;
-    TextView textViewThreeThree;
-    TextView textViewThreeFour;
-    TextView textViewFourOne;
-    TextView textViewFourTwo;
-    TextView textViewFourThree;
-    TextView textViewFourFour;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        ButterKnife.bind(this);
 
-        // инициализация макета
-        textViewScore = (TextView) findViewById(R.id.score);
-        textViewGameOver = (TextView) findViewById(R.id.game_over);
-        playField = (RelativeLayout) findViewById(R.id.playing_field);
-        imageButtonBack = (ImageButton) findViewById(R.id.button_back);
-        imageButtonRefresh = (ImageButton) findViewById(R.id.button_refresh);
-        imageButtonHack = (ImageButton) findViewById(R.id.button_hack);
-        imageButtonBestMove = (ImageButton) findViewById(R.id.button_best_move);
-        textViewOneOne = (TextView) findViewById(R.id.one_one);
-        textViewOneTwo = (TextView) findViewById(R.id.one_two);
-        textViewOneThree = (TextView) findViewById(R.id.one_three);
-        textViewOneFour = (TextView) findViewById(R.id.one_four);
-        textViewTwoOne = (TextView) findViewById(R.id.two_one);
-        textViewTwoTwo = (TextView) findViewById(R.id.two_two);
-        textViewTwoThree = (TextView) findViewById(R.id.two_three);
-        textViewTwoFour = (TextView) findViewById(R.id.two_four);
-        textViewThreeOne = (TextView) findViewById(R.id.three_one);
-        textViewThreeTwo = (TextView) findViewById(R.id.three_two);
-        textViewThreeThree = (TextView) findViewById(R.id.three_three);
-        textViewThreeFour = (TextView) findViewById(R.id.three_four);
-        textViewFourOne = (TextView) findViewById(R.id.four_one);
-        textViewFourTwo = (TextView) findViewById(R.id.four_two);
-        textViewFourThree = (TextView) findViewById(R.id.four_three);
-        textViewFourFour = (TextView) findViewById(R.id.four_four);
-        // вешаем на кнопки слушателя
-        imageButtonBack.setOnClickListener(this);
-        imageButtonRefresh.setOnClickListener(this);
-        imageButtonHack.setOnClickListener(this);
-        imageButtonBestMove.setOnClickListener(this);
         // инициализируем массив
         gameTiles = new Tile[FIELD_WIDTH][FIELD_WIDTH];
 
@@ -440,6 +436,20 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if (getEmptyTiles().size() != 0) {
             int randomIndex = (int) (getEmptyTiles().size() * Math.random());
             getEmptyTiles().get(randomIndex).value = Math.random() < 0.9 ? 2 : 4;
+        }
+    }
+
+    @OnClick({R.id.button_refresh, R.id.button_back, R.id.button_hack, R.id.button_best_move})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.button_refresh:
+                break;
+            case R.id.button_back:
+                break;
+            case R.id.button_hack:
+                break;
+            case R.id.button_best_move:
+                break;
         }
     }
 }
