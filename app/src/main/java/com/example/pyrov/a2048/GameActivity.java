@@ -269,9 +269,23 @@ public class GameActivity extends AppCompatActivity {
     }
 
     // метод возвращает true, если возможен ход
-    private boolean canMove() {
+    public boolean canMove() {
         if (!getEmptyTiles().isEmpty()) {
             return true;
+        }
+        for (int i = 0; i < gameTiles.length; i++) {
+            for (int j = 0; j < gameTiles.length - 1; j++) {
+                if (gameTiles[i][j].value == gameTiles[i][j + 1].value) {
+                    return true;
+                }
+            }
+        }
+        for (int j = 0; j < gameTiles.length; j++) {
+            for (int i = 0; i < gameTiles.length - 1; i++) {
+                if (gameTiles[i][j].value == gameTiles[i + 1][j].value) {
+                    return true;
+                }
+            }
         }
         textViewGameOver.setVisibility(View.VISIBLE);
         return false;
