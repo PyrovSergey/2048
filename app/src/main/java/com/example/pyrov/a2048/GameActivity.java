@@ -16,6 +16,7 @@ import java.util.PriorityQueue;
 import java.util.Stack;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -27,6 +28,8 @@ public class GameActivity extends AppCompatActivity {
     private int maxTile;
     // константа, определяющая ширину игрового поля
     private static final int FIELD_WIDTH = 4;
+
+
     @BindView(R.id.score)
     TextView textViewScore;
     @BindView(R.id.info)
@@ -34,38 +37,44 @@ public class GameActivity extends AppCompatActivity {
     @BindView(R.id.game_over)
     TextView textViewGameOver;
 
-    @BindView(R.id.one_one)
-    TextView textViewOneOne;
-    @BindView(R.id.one_two)
-    TextView textViewOneTwo;
-    @BindView(R.id.one_three)
-    TextView textViewOneThree;
-    @BindView(R.id.one_four)
-    TextView textViewOneFour;
-    @BindView(R.id.two_one)
-    TextView textViewTwoOne;
-    @BindView(R.id.two_two)
-    TextView textViewTwoTwo;
-    @BindView(R.id.two_three)
-    TextView textViewTwoThree;
-    @BindView(R.id.two_four)
-    TextView textViewTwoFour;
-    @BindView(R.id.three_one)
-    TextView textViewThreeOne;
-    @BindView(R.id.three_two)
-    TextView textViewThreeTwo;
-    @BindView(R.id.three_three)
-    TextView textViewThreeThree;
-    @BindView(R.id.three_four)
-    TextView textViewThreeFour;
-    @BindView(R.id.four_one)
-    TextView textViewFourOne;
-    @BindView(R.id.four_two)
-    TextView textViewFourTwo;
-    @BindView(R.id.four_three)
-    TextView textViewFourThree;
-    @BindView(R.id.four_four)
-    TextView textViewFourFour;
+//    @BindView(R.id.one_one)
+//    TextView textViewOneOne;
+//    @BindView(R.id.one_two)
+//    TextView textViewOneTwo;
+//    @BindView(R.id.one_three)
+//    TextView textViewOneThree;
+//    @BindView(R.id.one_four)
+//    TextView textViewOneFour;
+//    @BindView(R.id.two_one)
+//    TextView textViewTwoOne;
+//    @BindView(R.id.two_two)
+//    TextView textViewTwoTwo;
+//    @BindView(R.id.two_three)
+//    TextView textViewTwoThree;
+//    @BindView(R.id.two_four)
+//    TextView textViewTwoFour;
+//    @BindView(R.id.three_one)
+//    TextView textViewThreeOne;
+//    @BindView(R.id.three_two)
+//    TextView textViewThreeTwo;
+//    @BindView(R.id.three_three)
+//    TextView textViewThreeThree;
+//    @BindView(R.id.three_four)
+//    TextView textViewThreeFour;
+//    @BindView(R.id.four_one)
+//    TextView textViewFourOne;
+//    @BindView(R.id.four_two)
+//    TextView textViewFourTwo;
+//    @BindView(R.id.four_three)
+//    TextView textViewFourThree;
+//    @BindView(R.id.four_four)
+//    TextView textViewFourFour;
+
+    @BindViews({R.id.one_one, R.id.one_two, R.id.one_three, R.id.one_four,
+            R.id.two_one, R.id.two_two, R.id.two_three, R.id.two_four,
+            R.id.three_one, R.id.three_two, R.id.three_three, R.id.three_four,
+            R.id.four_one, R.id.four_two, R.id.four_three, R.id.four_four})
+    List<TextView> listTilesView;
 
     @BindView(R.id.linearLayout)
     LinearLayout linearLayout;
@@ -153,57 +162,13 @@ public class GameActivity extends AppCompatActivity {
     // метод обновления игрового поля
     private void repaint() {
         textViewScore.setText(String.valueOf(score));
-        // обновляем все значения TextView по массиву
-        textViewOneOne.setText(String.valueOf(gameTiles[0][0].value == 0 ? "" : gameTiles[0][0].value));
-        textViewOneTwo.setText(String.valueOf(gameTiles[0][1].value == 0 ? "" : gameTiles[0][1].value));
-        textViewOneThree.setText(String.valueOf(gameTiles[0][2].value == 0 ? "" : gameTiles[0][2].value));
-        textViewOneFour.setText(String.valueOf(gameTiles[0][3].value == 0 ? "" : gameTiles[0][3].value));
-        textViewTwoOne.setText(String.valueOf(gameTiles[1][0].value == 0 ? "" : gameTiles[1][0].value));
-        textViewTwoTwo.setText(String.valueOf(gameTiles[1][1].value == 0 ? "" : gameTiles[1][1].value));
-        textViewTwoThree.setText(String.valueOf(gameTiles[1][2].value == 0 ? "" : gameTiles[1][2].value));
-        textViewTwoFour.setText(String.valueOf(gameTiles[1][3].value == 0 ? "" : gameTiles[1][3].value));
-        textViewThreeOne.setText(String.valueOf(gameTiles[2][0].value == 0 ? "" : gameTiles[2][0].value));
-        textViewThreeTwo.setText(String.valueOf(gameTiles[2][1].value == 0 ? "" : gameTiles[2][1].value));
-        textViewThreeThree.setText(String.valueOf(gameTiles[2][2].value == 0 ? "" : gameTiles[2][2].value));
-        textViewThreeFour.setText(String.valueOf(gameTiles[2][3].value == 0 ? "" : gameTiles[2][3].value));
-        textViewFourOne.setText(String.valueOf(gameTiles[3][0].value == 0 ? "" : gameTiles[3][0].value));
-        textViewFourTwo.setText(String.valueOf(gameTiles[3][1].value == 0 ? "" : gameTiles[3][1].value));
-        textViewFourThree.setText(String.valueOf(gameTiles[3][2].value == 0 ? "" : gameTiles[3][2].value));
-        textViewFourFour.setText(String.valueOf(gameTiles[3][3].value == 0 ? "" : gameTiles[3][3].value));
-        // обновляем все цвета текта TextView по массиву
-        textViewOneOne.setTextColor(getResources().getColor(gameTiles[0][0].getFontColor()));
-        textViewOneTwo.setTextColor(getResources().getColor(gameTiles[0][1].getFontColor()));
-        textViewOneThree.setTextColor(getResources().getColor(gameTiles[0][2].getFontColor()));
-        textViewOneFour.setTextColor(getResources().getColor(gameTiles[0][3].getFontColor()));
-        textViewTwoOne.setTextColor(getResources().getColor(gameTiles[1][0].getFontColor()));
-        textViewTwoTwo.setTextColor(getResources().getColor(gameTiles[1][1].getFontColor()));
-        textViewTwoThree.setTextColor(getResources().getColor(gameTiles[1][2].getFontColor()));
-        textViewTwoFour.setTextColor(getResources().getColor(gameTiles[1][3].getFontColor()));
-        textViewThreeOne.setTextColor(getResources().getColor(gameTiles[2][0].getFontColor()));
-        textViewThreeTwo.setTextColor(getResources().getColor(gameTiles[2][1].getFontColor()));
-        textViewThreeThree.setTextColor(getResources().getColor(gameTiles[2][2].getFontColor()));
-        textViewThreeFour.setTextColor(getResources().getColor(gameTiles[2][3].getFontColor()));
-        textViewFourOne.setTextColor(getResources().getColor(gameTiles[3][0].getFontColor()));
-        textViewFourTwo.setTextColor(getResources().getColor(gameTiles[3][1].getFontColor()));
-        textViewFourThree.setTextColor(getResources().getColor(gameTiles[3][2].getFontColor()));
-        textViewFourFour.setTextColor(getResources().getColor(gameTiles[3][3].getFontColor()));
-        // обновляем все цвета фона TextView по массиву
-        textViewOneOne.setBackgroundColor(getResources().getColor(gameTiles[0][0].getTileColor()));
-        textViewOneTwo.setBackgroundColor(getResources().getColor(gameTiles[0][1].getTileColor()));
-        textViewOneThree.setBackgroundColor(getResources().getColor(gameTiles[0][2].getTileColor()));
-        textViewOneFour.setBackgroundColor(getResources().getColor(gameTiles[0][3].getTileColor()));
-        textViewTwoOne.setBackgroundColor(getResources().getColor(gameTiles[1][0].getTileColor()));
-        textViewTwoTwo.setBackgroundColor(getResources().getColor(gameTiles[1][1].getTileColor()));
-        textViewTwoThree.setBackgroundColor(getResources().getColor(gameTiles[1][2].getTileColor()));
-        textViewTwoFour.setBackgroundColor(getResources().getColor(gameTiles[1][3].getTileColor()));
-        textViewThreeOne.setBackgroundColor(getResources().getColor(gameTiles[2][0].getTileColor()));
-        textViewThreeTwo.setBackgroundColor(getResources().getColor(gameTiles[2][1].getTileColor()));
-        textViewThreeThree.setBackgroundColor(getResources().getColor(gameTiles[2][2].getTileColor()));
-        textViewThreeFour.setBackgroundColor(getResources().getColor(gameTiles[2][3].getTileColor()));
-        textViewFourOne.setBackgroundColor(getResources().getColor(gameTiles[3][0].getTileColor()));
-        textViewFourTwo.setBackgroundColor(getResources().getColor(gameTiles[3][1].getTileColor()));
-        textViewFourThree.setBackgroundColor(getResources().getColor(gameTiles[3][2].getTileColor()));
-        textViewFourFour.setBackgroundColor(getResources().getColor(gameTiles[3][3].getTileColor()));
+        for (int i = 0; i < gameTiles.length; i++) {
+            for (int j = 0; j < gameTiles[i].length; j++) {
+                listTilesView.get(i * 4 + j).setText(String.valueOf(gameTiles[i][j].value == 0 ? "" : gameTiles[i][j].value));
+                listTilesView.get(i * 4 + j).setTextColor(getResources().getColor(gameTiles[i][j].getFontColor()));
+                listTilesView.get(i * 4 + j).setBackgroundColor(getResources().getColor(gameTiles[i][j].getTileColor()));
+            }
+        }
     }
 
     @OnClick({R.id.button_refresh, R.id.button_back, R.id.button_hack, R.id.button_best_move})
@@ -390,8 +355,6 @@ public class GameActivity extends AppCompatActivity {
 
     // метод для лучшего хода в игре
     private void bestMove() {
-        // что тут писать?
-        //Toast.makeText(this, "Пока не реализовано", Toast.LENGTH_SHORT).show();
         autoMove();
         repaint();
     }
