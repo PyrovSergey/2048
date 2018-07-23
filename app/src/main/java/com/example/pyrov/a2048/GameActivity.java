@@ -29,46 +29,12 @@ public class GameActivity extends AppCompatActivity {
     // константа, определяющая ширину игрового поля
     private static final int FIELD_WIDTH = 4;
 
-
     @BindView(R.id.score)
     TextView textViewScore;
     @BindView(R.id.info)
     LinearLayout info;
     @BindView(R.id.game_over)
     TextView textViewGameOver;
-
-//    @BindView(R.id.one_one)
-//    TextView textViewOneOne;
-//    @BindView(R.id.one_two)
-//    TextView textViewOneTwo;
-//    @BindView(R.id.one_three)
-//    TextView textViewOneThree;
-//    @BindView(R.id.one_four)
-//    TextView textViewOneFour;
-//    @BindView(R.id.two_one)
-//    TextView textViewTwoOne;
-//    @BindView(R.id.two_two)
-//    TextView textViewTwoTwo;
-//    @BindView(R.id.two_three)
-//    TextView textViewTwoThree;
-//    @BindView(R.id.two_four)
-//    TextView textViewTwoFour;
-//    @BindView(R.id.three_one)
-//    TextView textViewThreeOne;
-//    @BindView(R.id.three_two)
-//    TextView textViewThreeTwo;
-//    @BindView(R.id.three_three)
-//    TextView textViewThreeThree;
-//    @BindView(R.id.three_four)
-//    TextView textViewThreeFour;
-//    @BindView(R.id.four_one)
-//    TextView textViewFourOne;
-//    @BindView(R.id.four_two)
-//    TextView textViewFourTwo;
-//    @BindView(R.id.four_three)
-//    TextView textViewFourThree;
-//    @BindView(R.id.four_four)
-//    TextView textViewFourFour;
 
     @BindViews({R.id.one_one, R.id.one_two, R.id.one_three, R.id.one_four,
             R.id.two_one, R.id.two_two, R.id.two_three, R.id.two_four,
@@ -328,11 +294,6 @@ public class GameActivity extends AppCompatActivity {
 
         gameTiles = temp;
 
-//        for (int i = 0; i < FIELD_WIDTH; i++) {
-//            for (int j = 0; j < FIELD_WIDTH; j++) {
-//                gameTiles[i][j] = temp[i][j];
-//            }
-//        }
     }
 
     // метод рандомного хода в игре
