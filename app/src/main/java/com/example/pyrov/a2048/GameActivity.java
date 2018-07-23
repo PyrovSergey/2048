@@ -8,22 +8,23 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Stack;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class GameActivity extends AppCompatActivity implements View.OnClickListener {
+public class GameActivity extends AppCompatActivity {
 
     // текущий счет (очки)
-    int score;
+    private int score;
     // максимальный вес плитки (Tile.value)
-    int maxTile;
+    private int maxTile;
     // константа, определяющая ширину игрового поля
     private static final int FIELD_WIDTH = 4;
     @BindView(R.id.score)
@@ -84,13 +85,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     // булево - сохранить игру?
     private boolean isSaveNeeded = true;
     // стэк для хранения предыдущего состояния поля
-    Stack<Tile[][]> previousStates = new Stack<Tile[][]>();
+    private Stack<Tile[][]> previousStates = new Stack<>();
     // стэк для хранения предыдущего состояния очков
-    Stack<Integer> previousScores = new Stack<>();
+    private Stack<Integer> previousScores = new Stack<>();
     // булево игра выиграна?
-    boolean isGameWon = false;
+    private boolean isGameWon = false;
     // булево игра проиграна?
-    boolean isGameLost = false;
+    private boolean isGameLost = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +151,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // метод обновления игрового поля
-    public void repaint() {
+    private void repaint() {
         textViewScore.setText(String.valueOf(score));
         // обновляем все значения TextView по массиву
         textViewOneOne.setText(String.valueOf(gameTiles[0][0].value == 0 ? "" : gameTiles[0][0].value));
@@ -205,23 +206,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         textViewFourFour.setBackgroundColor(getResources().getColor(gameTiles[3][3].getTileColor()));
     }
 
-    @Override
-    public void onClick(View view) {
+    @OnClick({R.id.button_refresh, R.id.button_back, R.id.button_hack, R.id.button_best_move})
+    public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.button_back:
-                if (!canMove()) {
-                    return;
-                }
-                rollback();
-                break;
             case R.id.button_refresh:
-                textViewGameOver.setVisibility(View.GONE);
-                previousScores.clear();
-                previousStates.clear();
-                score = 0;
-                isGameWon = false;
-                isGameLost = false;
-                resetGameTiles();
+                refreshGame();
+                break;
+            case R.id.button_back:
+                rollback();
                 break;
             case R.id.button_hack:
                 if (!canMove()) {
@@ -233,6 +225,16 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 bestMove();
                 break;
         }
+    }
+
+    private void refreshGame() {
+        textViewGameOver.setVisibility(View.GONE);
+        previousScores.clear();
+        previousStates.clear();
+        score = 0;
+        isGameWon = false;
+        isGameLost = false;
+        resetGameTiles();
     }
 
     // метод сохраняет состояние игрового поля и очков
@@ -250,7 +252,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // метод восстанавливает предыдущее состояние игрового поля и очков
-    public void rollback() {
+    private void rollback() {
+        if (!canMove()) {
+            return;
+        }
         if (!previousStates.empty() && !previousScores.empty()) {
             gameTiles = previousStates.pop();
             score = previousScores.pop();
@@ -259,12 +264,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // геттер для поля gameTiles
-    public Tile[][] getGameTiles() {
+    private Tile[][] getGameTiles() {
         return gameTiles;
     }
 
     // метод возвращает true, если возможен ход
-    public boolean canMove() {
+    private boolean canMove() {
         if (!getEmptyTiles().isEmpty()) {
             return true;
         }
@@ -273,7 +278,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // метод движения влево
-    public void left() {
+    private void left() {
         if (isSaveNeeded) {
             saveState(gameTiles);
         }
@@ -290,7 +295,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // метод движения вправо
-    public void right() {
+    private void right() {
         saveState(gameTiles);
         rotation();
         rotation();
@@ -301,7 +306,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // метод движения вверх
-    public void up() {
+    private void up() {
         saveState(gameTiles);
         rotation();
         rotation();
@@ -312,7 +317,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // метод движения вниз
-    public void down() {
+    private void down() {
         saveState(gameTiles);
         rotation();
         left();
@@ -323,7 +328,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // метод "поворачивает" массив gameTiles на 90 градусов по часовой стрелке
-    public void rotation() {
+    private void rotation() {
         Tile[][] temp = new Tile[FIELD_WIDTH][FIELD_WIDTH];
         temp[0][3] = gameTiles[0][0];
         temp[1][3] = gameTiles[0][1];
@@ -342,15 +347,17 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         temp[2][0] = gameTiles[3][2];
         temp[3][0] = gameTiles[3][3];
 
-        for (int i = 0; i < FIELD_WIDTH; i++) {
-            for (int j = 0; j < FIELD_WIDTH; j++) {
-                gameTiles[i][j] = temp[i][j];
-            }
-        }
+        gameTiles = temp;
+
+//        for (int i = 0; i < FIELD_WIDTH; i++) {
+//            for (int j = 0; j < FIELD_WIDTH; j++) {
+//                gameTiles[i][j] = temp[i][j];
+//            }
+//        }
     }
 
     // метод рандомного хода в игре
-    public void randomMove() {
+    private void randomMove() {
         int move = ((int) (Math.random() * 100)) % 4;
         if (move == 0) {
             left();
@@ -370,8 +377,47 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     // метод для лучшего хода в игре
     private void bestMove() {
         // что тут писать?
-        Toast.makeText(this, "Пока не реализовано", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Пока не реализовано", Toast.LENGTH_SHORT).show();
+        autoMove();
         repaint();
+    }
+
+    private MoveEfficiency getMoveEfficiency(Move move) {
+        MoveEfficiency moveEfficiency;
+        move.move();
+        if (hasBoardChanged()) {
+            moveEfficiency = new MoveEfficiency(getEmptyTiles().size(), score, move);
+        } else {
+            moveEfficiency = new MoveEfficiency(-1, 0, move);
+        }
+        rollback();
+
+        return moveEfficiency;
+    }
+
+    private void autoMove() {
+        PriorityQueue<MoveEfficiency> priorityQueue = new PriorityQueue<>(4, Collections.reverseOrder());
+        priorityQueue.offer(getMoveEfficiency(this::left));
+        priorityQueue.offer(getMoveEfficiency(this::right));
+        priorityQueue.offer(getMoveEfficiency(this::up));
+        priorityQueue.offer(getMoveEfficiency(this::down));
+
+        priorityQueue.peek().getMove().move();
+    }
+
+    private boolean hasBoardChanged() {
+        int sum1 = 0;
+        int sum2 = 0;
+        if (!previousStates.isEmpty()) {
+            Tile[][] prevGameTiles = previousStates.peek();
+            for (int i = 0; i < FIELD_WIDTH; i++) {
+                for (int j = 0; j < FIELD_WIDTH; j++) {
+                    sum1 += gameTiles[i][j].value;
+                    sum2 += prevGameTiles[i][j].value;
+                }
+            }
+        }
+        return sum1 != sum2;
     }
 
     // метод "сжатия плиток"
@@ -406,7 +452,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // метод для заполнение массива gameTiles объектами "плитка"
-    void resetGameTiles() {
+    private void resetGameTiles() {
         gameTiles = new Tile[FIELD_WIDTH][FIELD_WIDTH];
         for (int i = 0; i < gameTiles.length; i++) {
             for (int j = 0; j < gameTiles.length; j++) {
@@ -436,20 +482,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if (getEmptyTiles().size() != 0) {
             int randomIndex = (int) (getEmptyTiles().size() * Math.random());
             getEmptyTiles().get(randomIndex).value = Math.random() < 0.9 ? 2 : 4;
-        }
-    }
-
-    @OnClick({R.id.button_refresh, R.id.button_back, R.id.button_hack, R.id.button_best_move})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.button_refresh:
-                break;
-            case R.id.button_back:
-                break;
-            case R.id.button_hack:
-                break;
-            case R.id.button_best_move:
-                break;
         }
     }
 }
